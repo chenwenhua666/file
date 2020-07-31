@@ -1,0 +1,187 @@
+1、ls
+选项：-a显示所有文件，包括隐藏文件
+	-l 显示详细信息     ls -l 等于ll
+	-d 查看目录属性
+	-h 人性化显示文件大小
+	-i 显示inode
+2、mkdir
+	-p 递归创建
+3、cd
+	简化操作
+	cd ~  和 cd  进入当前用户的家目录
+	cd -  进入上次目录
+	cd .. 进入上一级目录
+	cd .  进入当前目录
+Tab 补全
+Ctrl + L 清屏
+4、pwd 查询所在目录位置
+5、rmdir 删除空目录
+6、rm    -rf
+	-r 删除目录
+	-f 强制
+7、cp
+	-r 复制目录
+	-p 连带文件属性复制
+	-d 源文件为连接文件，则复制连接属性
+	-a 相当于-pdr
+8、mv [原文件或目录] [目标文件或目录]
+同目录下改名 mv [文件名] [新文件名]
+不需加-r
+9、ln -s [原文件] [目标文件]
+	-s 创建软链接(写绝对路径)
+10、locate [文件名] (文件名搜索，搜索速度更快)
+    /var/lib/mocalte #locate命令所搜索的后台数据库
+    updatedb
+11、whereis [命令名]
+	-b 所搜命令所在路径
+	-m 只查找帮助文档所在位置
+	whoami 
+	whatis ls
+	which [命令名] (命令的位置和别名)
+	echo $PATH
+12、find [搜索范围] [搜索条件]
+	find / -name "install.log*" 
+	* 匹配任意内容
+	？匹配一个字符
+	[]匹配任意一个中括号内的字符
+    find /root -iname install.log  #不区分大小写
+    find /root -user root #按照所有者搜索
+    find /root -nouser 查找没有所有者的文件
+    find /var/log/ -mtime +10
+	-10 十天内修改文件
+	10 十天当天修改的文件
+	+10 十天前修改的文件
+	atime 文件访问的时间
+	ctime 改变文件属性
+	mtime 修改文件内容
+    find . -size 25k   M
+	-25k 小于25KB的文件
+	25k 等于25KB的文件
+	+25k 大于25KB的文件
+    find . -inum 262422
+    find /etc -size +20k -a -size -50k
+	-a #and 与
+	-o #or 或
+    find /ect -size +20k -a -size -50k -exec ls -lh {} \
+    	#exec/-ok 命令 {} \  对搜索结果执行操作 
+13、grep [选项] 字符串 文件名
+    选项： -i 忽略大小写
+    	   -v 排除指定字符串
+14、man + 命令   输入字符  n键查找下一个 shift查找上一个
+	man -f 命令 #相当于 whatis 命令  举例：man 5 passwd
+	man -k 命令 #相当于 apropos
+	ls --help
+	help cd 获取shell内部命令帮助 # whereis cd 确定是否是shell内部命令
+15、info
+	-回车 进入子帮助页面（带有*号标记）
+	u 进入上册页面
+	n 进入下一个帮助小结
+	p 进入上一个帮助小结
+	q 退出 
+16 zip
+	zip 压缩文件名 源文件 
+	zip -r 压缩名 源目录 
+	unzip 压缩文件
+17 gzip
+	gzip 源文件 #压缩为.gz格式的压缩文件，源文件会消失
+	gzip -c 源文件 > 压缩文件  #压缩为.gz格式，源文件保留
+	gzip -r 目录 #压缩目录下所有的子文件，但是不能压缩目录
+	gzip -d 压缩文件
+	gunzip 压缩文件 #解压缩文件
+18、bzip2   #.bz2格式压缩
+	bzip2 源文件 #压缩为.bz2格式，不保留源文件
+	bzip2 -k 源文件 #压缩后保留源文件
+	bzip2 不能压缩目录
+	bzip2 -d 压缩文件 #解压缩，-k保留压缩文件
+	bunzip2 压缩文件 #解压缩，-k保留压缩文件
+19、tar -cvf 打包文件名 源文件
+	-c 打包
+	-v 显示过程
+	-f 指定打包后的文件名
+	-xvf + 打包文件名 #-x：解打包
+    tar -zcvf 压缩包名.tar.gz 源文件
+	-z 压缩为.tar.gz格式
+    tar -zxvf 压缩包名.tar.gz  #解压缩.tar.gz格式
+    tar -jcvf 压缩包名.tar.bz2 源文件
+	-j 压缩为.tar.bz2格式
+    tar -jxvf 压缩包名.tar.bz2 -C 目标目录#解压缩.tar.bz2格式，-C解压到目标目录
+    tar -zcvf 目标目录/压缩包名.tar.gz 源文件1 源文件2 #压缩多个文件或目录至指定目录下
+    tar -ztvf 压缩包名 #查看压缩包，t：test
+20、 shutdown [选项] [时间] &     Ctrl c 退出
+	-c取消前一个关机命令
+	-h关机
+	-r重启
+	runlevel 
+	logout #退出
+21、 mount [-t 文件系统] [-o 特殊选项] 设备文件名 挂载点
+	mount -o remount,noexec /home	
+	cd /home
+	vi hello.sh
+	chmod 755 hello.sh
+	./hello.sh
+	mount -o remount,exec /home
+	挂载光盘
+	mkdir /mnt/cdrom/ #建立挂载点
+	mount -t iso9660 /dev/cdrom /mnt/cdrom/
+	mount /dev/sr0 /mnt/cdrom/
+        umonut /mnt/cdrom
+	U盘
+	fdisk -l
+	mount -t vfat /dev/sdb1 /mnt/usb/
+22、  w #查看用户登录信息
+      who
+      last #查询当前登录和过去登陆用户信息   /var/log/wtmp
+      lastlog #查看所有用户的最后一次登陆时间  /var/log/lastlog
+23、echo [选项] [输出内容]
+	-e:支持反斜线控制的字符转换
+	echo -e "\e[1;31m 一句话 \e[0m" #30m-37m黑，红，绿，黄，蓝，洋红，青，白
+24、vi hello.sh
+	#!/bin/bash
+	bash hello.sh
+25、alias 
+    alias ls='ls --color=never'
+    vi ~/.bashrc 
+    source .bashrc
+    unalias
+26、Ctrl + c 强制终止当前命令
+    Ctrl + l 清屏
+    Ctrl + a 光标移动到命令行首
+    Ctrl + e 光标移动到命令行尾
+    Ctrl + u 从光标所在位置删除到行首
+    Ctrl + z 把命令放入后台
+    Ctrl + r 在历史命令中搜索
+27、 history [选项] [历史命令保存文件]
+	-c #清空
+	-w #缓存中的历史命令写入 ~/.bash_history    #默认保存1000条，/etc/profile修改默认值
+	!n #执行n条命令
+	!! #执行上一条命令
+	"!字符串" #执行最后一条以该字符串开头的命令
+28、 输出重定向
+	命令 > 文件 #覆盖
+	命令 >> 文件 #追加
+	错误命令 2>文件  #错误命令大于号两侧无空格
+	错误命令 2>>文件 
+    正确和输出同时保存
+    命令 > 文件 2>&1      等于 命令 &>文件
+    命令 >> 文件 2>&1   等于 命令 &>>文件
+    ls &>/dev/null
+    命令 >> 文件1 2>>文件2
+29、 wc [选项] [文件名]   + Ctrl D
+	-c 字节数
+	-w 单词书
+	-l 行数
+
+30、
+
+	more + 文件名  
+	enter:换行   空格:翻页   B:返回  ctrl+ c:退出
+	less + 文件名
+	pageDown pageUp
+        head + 文件名  tail+ 文件名
+
+	查看进程：top
+	查看瞬间：ps aux
+	杀死进程：kill + pid
+	查看文件大小：du -h
+	查看磁盘：df -h
+	查看内存：free

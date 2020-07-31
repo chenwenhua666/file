@@ -1,0 +1,42 @@
+1、vim
+	vim + 文件名  //打开文件后光标定位到文件最后一行
+	vim +5 文件名  //光标定位第5行
+	vim +/xxx 文件名  //打开文件后定位到xxx第一次出现的地方 n切换
+	底行模式中 
+		   :15  //光标定位15	
+		   /xxx 光标所在位置向后搜索xxx第一次出现的位置
+		   ?xxx 光标所在位置向前搜索xxx第一次出现的位置
+	命令模式中  
+		  ctrl + f  向下翻页(front)
+		  ctrl + b  向上翻页(back)
+	          ctrl + d  向下翻半页(down)
+		  ctrl + u  向上翻半页(up)
+		  dd   删除一行
+		  o    在光标所在行的下方插入一行并切换到输入模式
+		  yy   复制光标所在行
+		  p    在光标所在行的下方粘贴
+		  P    在光标所在行的上方粘贴
+2、用户和组
+	groupadd 组名  //添加组
+	groupadd -g 组编号 组名  //添加组的同时指定编号
+	groupmod -n 新组名 旧组名  //修改组名
+	groupmod -g 组编号 组名称  //修改组编号
+	groupdel 组名  //删除组 删除组先把组内用户删除
+
+	useradd -g 组名 用户名  //创建用户添加组  加 -G 附属组名   加入附属组
+	useradd -d 目录 用户名  //创建用户指定家目录
+	usermod -l 新名 旧名    //改名
+	usermod -d 目录 用户名  //修改家目录
+	usermod -g 组名 用户名  //修改用户组
+	userdel -r 用户名       //-r删除用户的同时删除家目录
+	touch /etc/nologin      //禁止其它账户登录 
+	passwd -l 用户名        //锁定账户
+	passwd -u 用户名        //解锁账户
+	passwd -d 用户名        //清除密码无密码登录
+
+	gpasswd -a 用户名 附属组名  //加入附属组
+	newgrp 组名             //切换组
+	gpasswd -d 用户名 附属组名  //删除附属组
+	gpasswd 组名            //修改组密码
+
+	su 用户名  //切换用户    不加用户名切换至root
