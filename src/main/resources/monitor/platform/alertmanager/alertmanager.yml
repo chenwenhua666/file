@@ -2,7 +2,7 @@ global:
   smtp_smarthost: 'smtp.qq.com:465'
   smtp_from: '764471698@qq.com'
   smtp_auth_username: '764471698'
-  smtp_auth_password: 'xagwinywfwjsbfjc'
+  smtp_auth_password: '123456'
   smtp_require_tls: false
 
 #templates:
