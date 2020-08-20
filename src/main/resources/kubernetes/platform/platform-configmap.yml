@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-cm
+data:
+  nacos.url: "nacos-service" # 对应K8S集群内部nacos服务Service
+  logstash.url: "logstash-service" # 对应K8S集群外部logstash服务Service
+  platform.mysql.url: "platform-mysql-service" # 对应K8S集群外部MySQL服务Service
+  platform.redis.url: "platform-redis-service" # 对应K8S集群外部Redis服务Service
+  platform.auth.url: "platform-auth-service" # 对应K8S集群内部platform-auth服务Service
+  platform.gateway.url: "platform-gateway-service" # 对应K8S集群内部platform-gateway服务Service
+  platform.admin.url: "platform-admin-service" # 对应K8S集群外部platform-admin服务Service

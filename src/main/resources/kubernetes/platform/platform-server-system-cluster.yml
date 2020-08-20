@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform-server-system-deployment
+spec:
+  selector:
+    matchLabels:
+      app: platform-server-system
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: platform-server-system
+    spec:
+      containers:
+        - name: platform-server-system
+          image: docker.oumasoft.com/platform/platform-server-system:2.0-RELEASE
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8201
+          #args:
+            #- "--spring.profiles.active=prod"
+          env:
+            - name: mysql.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: platform.mysql.url
+            - name: nacos.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: nacos.url
+            - name: logstash.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: logstash.url
+            - name: platform-gateway
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: platform.gateway.url
+            - name: platform-admin
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: platform.admin.url
+            - name: TZ
+              value: "Asia/Shanghai"
+          volumeMounts:
+            - mountPath: /log
+              name: platform-server-system-data
+          resources:
+            requests:
+              cpu: 500m
+              memory: 500Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+      volumes:
+        - name: platform-server-system-data
+          nfs:
+            path: /nfs/log
+            server: 192.168.84.48

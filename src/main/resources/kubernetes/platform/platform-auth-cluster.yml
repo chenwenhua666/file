@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: platform-auth-service
+spec:
+  ports:
+    - port: 8101
+      targetPort: 8101
+  selector:
+    app: platform-auth
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform-auth-deployment
+spec:
+  selector:
+    matchLabels:
+      app: platform-auth
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: platform-auth
+    spec:
+      containers:
+        - name: platform-auth
+          image: docker.oumasoft.com/platform/platform-auth:2.0-RELEASE
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8101
+          #args:
+            #- "--spring.profiles.active=prod"
+          env: # 从configmap加载配置到环境变量
+            - name: mysql.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: platform.mysql.url
+            - name: redis.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: platform.redis.url
+            - name: nacos.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: nacos.url
+            - name: logstash.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: logstash.url
+            - name: platform-admin
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: platform.admin.url
+            - name: TZ
+              value: "Asia/Shanghai"
+          volumeMounts:
+            - mountPath: /log
+              name: platform-auth-data
+          resources:
+            requests:
+              cpu: 500m
+              memory: 500Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+      volumes: # 日志挂载到NFS服务器
+        - name: platform-auth-data
+          nfs:
+            path: /nfs/log
+            server: 192.168.84.48

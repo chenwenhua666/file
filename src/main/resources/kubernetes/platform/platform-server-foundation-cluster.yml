@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform-server-foundation-deployment
+spec:
+  selector:
+    matchLabels:
+      app: platform-server-foundation
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: platform-server-foundation
+    spec:
+      containers:
+        - name: platform-server-foundation
+          image: docker.oumasoft.com/platform/platform-server-foundation:2.0-RELEASE
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8202
+          env:
+            - name: mysql.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: platform.mysql.url
+            - name: nacos.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: nacos.url
+            - name: logstash.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: logstash.url
+            - name: platform-gateway
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: platform.gateway.url
+            - name: platform-admin
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: platform.admin.url
+            - name: TZ
+              value: "Asia/Shanghai"
+          volumeMounts:
+            - mountPath: /log
+              name: platform-server-foundation-data
+          resources:
+            requests:
+              cpu: 300m
+              memory: 300Mi
+            limits:
+              cpu: 1
+              memory: 500Mi
+      volumes:
+        - name: platform-server-foundation-data
+          nfs:
+            path: /nfs/log
+            server: 192.168.84.48
