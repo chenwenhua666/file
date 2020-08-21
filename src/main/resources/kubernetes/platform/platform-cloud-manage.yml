@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  platform-cloud-manage:
+    image: docker.oumasoft.com/platform/platform-cloud-manage:2.0-RELEASE
+    container_name: platform-cloud-manage
+    volumes:
+      - "/platform/log:/log"
+    environment:
+      - "TZ=Asia/Shanghai"
+    ports:
+      - 9527:80
+    restart: on-failure
