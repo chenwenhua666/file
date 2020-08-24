@@ -11,3 +11,10 @@ spec:
             backend:
               serviceName: platform-gateway-service
               servicePort: 8301
+    - host: cloud.sba.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: platform-admin-service
+              servicePort: 8401

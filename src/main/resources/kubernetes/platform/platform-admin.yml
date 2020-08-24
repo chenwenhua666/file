@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: platform-admin-service
+spec:
+  ports:
+    - port: 8401
+      targetPort: 8401
+  selector:
+    app: platform-admin
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform-admin-deployment
+spec:
+  selector:
+    matchLabels:
+      app: platform-admin
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: platform-admin
+    spec:
+      containers:
+        - name: platform-admin
+          image: docker.oumasoft.com/platform/platform-admin:2.0-RELEASE
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8401
+          env:
+            - name: nacos.url
+              valueFrom:
+                configMapKeyRef:
+                  name: platform-cm
+                  key: nacos.url
+            - name: TZ
+              value: "Asia/Shanghai"
+          resources:
+            requests:
+              cpu: 0.3
+              memory: 300Mi
+            limits:
+              cpu: 1
+              memory: 500Mi
+          volumeMounts:
+            - mountPath: /log
+              name: platform-admin-data
+      volumes:
+        - name: platform-admin-data
+          nfs:
+            path: /nfs/log
+            server: 192.168.84.48
