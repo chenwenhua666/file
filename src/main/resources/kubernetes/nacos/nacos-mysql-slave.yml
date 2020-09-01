@@ -16,6 +16,7 @@ spec:
       containers:
         - name: slave
           image: nacos/nacos-mysql-slave:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3306
           volumeMounts:

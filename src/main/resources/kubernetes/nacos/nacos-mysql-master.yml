@@ -16,6 +16,7 @@ spec:
       containers:
         - name: master
           image: nacos/nacos-mysql-master:latest # nacos-mysql-master镜像
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3306 # 端口3306
           volumeMounts:
